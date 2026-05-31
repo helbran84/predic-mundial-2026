@@ -3,143 +3,238 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Predictor Mundial 2026</title>
+<title>🏆 Predictor Mundial 2026</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Segoe UI', Arial, sans-serif; background: #0a1628; color: #e0e0e0; padding: 20px; min-height: 100vh; }
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 50% 0%, #1a3a1a 0%, #0a1628 60%, #050a15 100%);
+  color: #e0e0e0;
+  overflow-x: hidden;
+}
+
+/* ── Background decor ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: -1;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,215,0,0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(76,175,80,0.03) 0%, transparent 50%),
+    repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(255,255,255,0.008) 40px, rgba(255,255,255,0.008) 41px);
+}
+
+/* ── Stars ── */
+.stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: hidden; }
+.star { position: absolute; width: 2px; height: 2px; background: #fff; border-radius: 50%; animation: twinkle 3s infinite alternate; }
+@keyframes twinkle { 0% { opacity: 0.2; } 100% { opacity: 0.8; } }
 
 /* ── HEADER ── */
-.header { text-align: center; padding: 20px 0 10px; }
-.header h1 { font-size: 32px; color: #FFD700; letter-spacing: 2px; }
-.header h1 small { font-size: 16px; color: #888; letter-spacing: 0; }
-.header p { color: #667; font-size: 13px; margin-top: 4px; }
+.header {
+  text-align: center; padding: 28px 20px 16px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 100%);
+}
+.header h1 { font-size: 38px; font-weight: 800; background: linear-gradient(135deg, #FFD700, #FFA000, #FFD700);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: none;
+  letter-spacing: 1px; }
+.header h1 .year { font-weight: 400; color: #90CAF9; -webkit-text-fill-color: #90CAF9; font-size: 24px; }
+.header .sub { color: #889; font-size: 13px; margin-top: 4px; letter-spacing: 1px; }
+.header .sub span { color: #FFD700; }
+
+/* ── TROPHY DIVIDER ── */
+.divider { text-align: center; padding: 10px 0; color: rgba(255,215,0,0.15); font-size: 24px; letter-spacing: 8px; }
 
 /* ── SECTIONS ── */
-section { margin-bottom: 30px; }
-.section-title { color: #FFD700; font-size: 20px; margin-bottom: 14px; border-bottom: 2px solid #1a3a5c; padding-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+section { max-width: 1400px; margin: 0 auto 30px; padding: 0 20px; }
+.section-title {
+  font-size: 20px; font-weight: 700; color: #FFD700; margin-bottom: 14px; padding-bottom: 8px;
+  border-bottom: 2px solid rgba(255,215,0,0.15); display: flex; align-items: center; gap: 10px;
+  letter-spacing: 0.5px;
+}
 
 /* ── GROUPS ── */
-#groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
-.group-card { background: linear-gradient(145deg, #1a2744, #15203a); border-radius: 12px; padding: 14px; border: 1px solid #2a3f60; }
-.group-card h3 { font-size: 14px; color: #90CAF9; margin-bottom: 8px; letter-spacing: 0.5px; }
-.matches { display: flex; flex-direction: column; gap: 4px; }
+#groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 14px; }
+
+.group-card {
+  background: linear-gradient(160deg, rgba(26,39,68,0.9), rgba(15,25,45,0.95));
+  border-radius: 14px; padding: 16px; border: 1px solid rgba(42,63,96,0.5);
+  backdrop-filter: blur(10px); transition: 0.3s;
+}
+.group-card:hover { border-color: rgba(79,195,247,0.3); transform: translateY(-1px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+.group-card h3 { font-size: 15px; font-weight: 700; color: #90CAF9; margin-bottom: 10px; letter-spacing: 0.5px; }
+.group-card h3::before { content: '📋 '; }
+
+.matches { display: flex; flex-direction: column; gap: 5px; }
 .match { display: flex; align-items: center; gap: 6px; padding: 3px 0; }
-.match .tn { font-size: 12px; min-width: 72px; }
+.match .tn { font-size: 12px; min-width: 78px; font-weight: 500; }
 .match .tn:first-child { text-align: right; }
 .match .tn:last-child { text-align: left; }
-.match select { flex: 1; padding: 5px 6px; font-size: 11px; border: 1px solid #2a3f60; border-radius: 6px;
-  background: #0d1a33; color: #ccc; cursor: pointer; outline: none; transition: 0.2s; }
-.match select:focus { border-color: #4FC3F7; box-shadow: 0 0 8px rgba(79,195,247,0.15); }
+.match select {
+  flex: 1; padding: 6px 8px; font-size: 11px; font-family: 'Montserrat', sans-serif;
+  border: 1px solid rgba(42,63,96,0.6); border-radius: 8px;
+  background: rgba(13,26,51,0.8); color: #ccc; cursor: pointer; outline: none;
+  transition: 0.2s; }
+.match select:focus { border-color: #4FC3F7; box-shadow: 0 0 12px rgba(79,195,247,0.12); }
 .match select option { background: #0d1a33; color: #ccc; }
 
-.standings { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 12px; }
-.standings th { background: #0d1a33; color: #90CAF9; padding: 5px 4px; text-align: center; border-bottom: 2px solid #2a3f60; font-size: 11px; }
-.standings td { padding: 4px; text-align: center; border-bottom: 1px solid #15203a; font-size: 12px; }
-.standings td:first-child { width: 22px; color: #667; }
-.standings td:nth-child(2) { text-align: left; padding-left: 8px; font-weight: 500; }
+.standings { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; border-radius: 8px; overflow: hidden; }
+.standings th { background: rgba(13,26,51,0.6); color: #90CAF9; padding: 5px 4px; text-align: center;
+  font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid rgba(42,63,96,0.4); }
+.standings td { padding: 5px 4px; text-align: center; border-bottom: 1px solid rgba(21,32,58,0.5); font-size: 12px; }
+.standings td:first-child { width: 22px; color: #556; font-weight: 600; }
+.standings td:nth-child(2) { text-align: left; padding-left: 8px; font-weight: 600; }
 .standings tr.qualified td { color: #81C784; }
 .standings tr.qualified { background: rgba(76,175,80,0.08); }
 .standings tr.third td { color: #FFD54F; }
-.standings tr.third { background: rgba(255,213,79,0.06); }
-.pts-badge { display: inline-block; background: #0d1a33; color: #FFD700; border-radius: 10px; padding: 1px 8px; font-weight: bold; font-size: 12px; border: 1px solid #2a3f60; }
+.standings tr.third { background: rgba(255,213,79,0.05); }
+.pts-badge {
+  display: inline-block; background: rgba(13,26,51,0.8); color: #FFD700;
+  border-radius: 12px; padding: 1px 10px; font-weight: 700; font-size: 13px;
+  border: 1px solid rgba(255,215,0,0.2); min-width: 28px;
+}
 
 /* ── QUALIFIERS ── */
-#qualifiers { background: linear-gradient(145deg, #15203a, #0d1a33); border-radius: 12px; padding: 16px; border: 1px solid #2a3f60; }
-.q-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px; margin: 8px 0; }
-.q-item { padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+#qualifiers {
+  background: linear-gradient(160deg, rgba(26,39,68,0.8), rgba(15,25,45,0.9));
+  border-radius: 14px; padding: 18px 20px; border: 1px solid rgba(42,63,96,0.4);
+  backdrop-filter: blur(10px);
+}
+.q-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px; margin: 8px 0; }
+.q-item { padding: 5px 10px; border-radius: 6px; font-size: 12px; background: rgba(13,26,51,0.3); }
 .q-item strong { color: #90CAF9; margin-right: 4px; }
 .q-1st { color: #81C784; font-weight: 600; }
 .q-2nd { color: #64B5F6; font-weight: 600; }
-.third-section { margin-top: 10px; padding-top: 10px; border-top: 1px solid #1a2a45; }
-.third-section h4 { color: #90CAF9; font-size: 12px; margin-bottom: 6px; font-weight: 400; }
+.third-section { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(42,63,96,0.3); }
+.third-section h4 { color: #90CAF9; font-size: 12px; margin-bottom: 8px; font-weight: 500; letter-spacing: 0.5px; }
 .third-grid { display: flex; flex-wrap: wrap; gap: 6px; }
-.third-chip { padding: 3px 10px; border-radius: 12px; font-size: 11px; transition: 0.2s; }
-.third-in { background: rgba(76,175,80,0.15); color: #81C784; border: 1px solid #2a5a2a; }
-.third-out { background: rgba(244,67,54,0.1); color: #EF5350; border: 1px solid #4a1a1a; text-decoration: line-through; opacity: 0.5; }
+.third-chip { padding: 4px 12px; border-radius: 14px; font-size: 11px; transition: 0.2s; font-weight: 500; }
+.third-in { background: rgba(76,175,80,0.15); color: #81C784; border: 1px solid rgba(42,90,42,0.5); }
+.third-out { background: rgba(244,67,54,0.08); color: #EF5350; border: 1px solid rgba(74,26,26,0.3); text-decoration: line-through; opacity: 0.45; }
 
 /* ── BRACKET ── */
 #bracket { overflow-x: auto; padding: 10px 0 20px; }
-
 .bracket-flow { display: flex; gap: 0; min-width: fit-content; position: relative; }
 
-.round-col { display: flex; flex-direction: column; gap: 0; min-width: 170px; }
-.round-col + .round-col { margin-left: 12px; }
-.round-col.r32, .round-col.r16 { min-width: 185px; }
+.round-col { display: flex; flex-direction: column; gap: 0; min-width: 175px; }
+.round-col + .round-col { margin-left: 16px; }
+.round-col.r32, .round-col.r16 { min-width: 190px; }
 
-.round-header { text-align: center; font-size: 12px; font-weight: 600; color: #90CAF9;
-  padding: 8px 10px; background: #0d1a33; border-radius: 8px 8px 0 0; border: 1px solid #2a3f60; border-bottom: none;
-  letter-spacing: 0.5px; white-space: nowrap; }
-.round-header .sub { display: block; font-size: 9px; color: #556; font-weight: 400; letter-spacing: 0; margin-top: 1px; }
+.round-header {
+  text-align: center; font-size: 11px; font-weight: 700; color: #FFD700;
+  padding: 10px 12px; background: rgba(13,26,51,0.7); border-radius: 10px 10px 0 0;
+  border: 1px solid rgba(42,63,96,0.5); border-bottom: none; text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.round-header .sub { display: block; font-size: 9px; color: #667; font-weight: 400; letter-spacing: 0; margin-top: 2px; }
+.round-col:last-child .round-header { background: rgba(42,26,0,0.5); border-color: rgba(255,215,0,0.2); }
+.round-col:last-child .round-header .sub { color: #FFD700; }
 
-.match-slot { padding: 0 6px; display: flex; flex-direction: column; justify-content: center; }
+.match-slot { padding: 0 8px; display: flex; flex-direction: column; justify-content: center; }
 
-.match-card { background: linear-gradient(145deg, #1a2744, #15203a); border: 1px solid #2a3f60;
-  border-radius: 8px; padding: 6px; transition: all 0.2s; }
-.match-card:hover { border-color: #4a6f90; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+.match-card {
+  background: linear-gradient(160deg, rgba(26,39,68,0.85), rgba(15,25,45,0.9));
+  border: 1px solid rgba(42,63,96,0.4); border-radius: 10px; padding: 8px;
+  transition: all 0.25s;
+}
+.match-card:hover { border-color: rgba(79,195,247,0.4); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
 
-.team-btn { display: block; width: 100%; padding: 7px 8px; font-size: 11px; text-align: center;
-  border: 1px solid #2a3f60; border-radius: 5px; background: #0d1a33; color: #bcc;
-  cursor: pointer; transition: all 0.15s; font-family: inherit; line-height: 1.2; }
-.team-btn:hover:not(:disabled) { background: #1e3555; border-color: #4FC3F7; color: #fff; }
-.team-btn.winner { background: linear-gradient(135deg, #1a5a1a, #2a6a2a); border-color: #66BB6A; color: #81C784; font-weight: 700; }
-.team-btn:disabled { opacity: 0.35; cursor: default; }
-.team-btn[data-dummy="1"] { visibility: hidden; }
+.team-btn {
+  display: block; width: 100%; padding: 8px 10px; font-size: 12px; font-family: 'Montserrat', sans-serif; font-weight: 600;
+  text-align: center; border: 1px solid rgba(42,63,96,0.5); border-radius: 6px;
+  background: rgba(13,26,51,0.6); color: #bcc; cursor: pointer; transition: all 0.15s;
+  line-height: 1.3;
+}
+.team-btn:hover:not(:disabled) { background: rgba(30,53,85,0.8); border-color: #4FC3F7; color: #fff; }
+.team-btn.winner {
+  background: linear-gradient(135deg, rgba(26,90,26,0.8), rgba(42,106,42,0.6));
+  border-color: rgba(102,187,106,0.5); color: #81C784; font-weight: 700;
+  box-shadow: 0 0 12px rgba(102,187,106,0.1);
+}
+.team-btn:disabled { opacity: 0.3; cursor: default; }
 
-.match-vs { text-align: center; font-size: 8px; color: #445; padding: 1px 0; letter-spacing: 1px; }
-
-/* connecting lines using borders */
-.bracket-tree { position: relative; }
+.match-vs { text-align: center; font-size: 9px; color: #445; padding: 2px 0; letter-spacing: 1px; font-weight: 600; }
 
 /* ── CHAMPION ── */
-#champion { text-align: center; }
-.champion-box { display: inline-block; padding: 16px 40px; margin: 10px 0;
-  background: linear-gradient(135deg, #1a2744, #3a2a00); border: 2px solid #FFD700;
-  border-radius: 12px; color: #FFD700; font-size: 28px; font-weight: 700;
-  animation: pulse 2s ease-in-out infinite; letter-spacing: 2px; }
-.champion-box small { display: block; font-size: 13px; color: #AA8800; font-weight: 400; letter-spacing: 1px; margin-top: 2px; }
-@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.015); } }
+#champion { text-align: center; max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+.champion-box {
+  display: inline-flex; flex-direction: column; align-items: center;
+  padding: 20px 50px; margin: 10px 0;
+  background: linear-gradient(135deg, rgba(26,39,68,0.9), rgba(58,42,0,0.8));
+  border: 2px solid #FFD700; border-radius: 16px;
+  color: #FFD700; font-size: 32px; font-weight: 800;
+  animation: championPulse 2s ease-in-out infinite;
+  letter-spacing: 2px; box-shadow: 0 0 40px rgba(255,215,0,0.1);
+}
+.champion-box small { font-size: 14px; color: #AA8800; font-weight: 500; letter-spacing: 2px; margin-top: 4px; }
+@keyframes championPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.01); } }
 
 /* ── FOOTER ── */
-.footer { text-align: center; color: #445; padding: 20px; font-size: 11px; border-top: 1px solid #1a2a45; margin-top: 20px; }
+.footer { text-align: center; color: #334; padding: 25px; font-size: 11px; border-top: 1px solid rgba(26,42,69,0.4); margin-top: 20px; letter-spacing: 1px; }
 
+/* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   #groups { grid-template-columns: 1fr; }
   .q-grid { grid-template-columns: 1fr 1fr; }
+  .header h1 { font-size: 26px; }
+  .header h1 .year { font-size: 18px; }
 }
 </style>
 </head>
 <body>
 
+<!-- Stars background -->
+<div class="stars" id="stars"></div>
+
 <div class="header">
-  <h1>⚽ Mundial 2026 <small>· Predictor</small></h1>
-  <p>Elegí resultados en fase de grupos → hacé clic en los ganadores del bracket</p>
+  <h1>🏆 Mundial <span class="year">2026</span></h1>
+  <div class="sub">🇺🇸 🇨🇦 🇲🇽 · <span>Predictor</span> · elegí resultados y armá tu camino al campeón</div>
 </div>
+<div class="divider">━━━ ★ ━━━</div>
 
 <section><div class="section-title">📋 Fase de Grupos</div><div id="groups"></div></section>
 <section><div class="section-title">✅ Clasificados</div><div id="qualifiers"></div></section>
 <section><div class="section-title">🏆 Fase Eliminatoria</div><div id="bracket"></div></section>
 <div id="champion"></div>
-<div class="footer">Actualizá los grupos y el bracket se reinicia automáticamente</div>
+<div class="footer">⚽ Hacé tus predicciones · El bracket se reinicia si cambiás los grupos</div>
 
 <script>
-const teamsData = {
-  A: ["México", "Sudáfrica", "Corea del Sur", "República Checa"],
-  B: ["Canadá", "Bosnia y Herz.", "Qatar", "Suiza"],
-  C: ["Brasil", "Marruecos", "Haití", "Escocia"],
-  D: ["EE.UU.", "Paraguay", "Australia", "Turquía"],
-  E: ["Alemania", "Curazao", "Costa de Marfil", "Ecuador"],
-  F: ["Países Bajos", "Japón", "Suecia", "Túnez"],
-  G: ["Bélgica", "Egipto", "Irán", "N. Zelanda"],
-  H: ["España", "Uruguay", "Arabia Saudí", "Cabo Verde"],
-  I: ["Francia", "Senegal", "Irak", "Noruega"],
-  J: ["Argentina", "Argelia", "Austria", "Jordania"],
-  K: ["Portugal", "RD Congo", "Uzbekistán", "Colombia"],
-  L: ["Inglaterra", "Croacia", "Ghana", "Panamá"]
+const flagMap = {
+  "México":"🇲🇽","Sudáfrica":"🇿🇦","Corea del Sur":"🇰🇷","República Checa":"🇨🇿",
+  "Canadá":"🇨🇦","Bosnia y Herz.":"🇧🇦","Qatar":"🇶🇦","Suiza":"🇨🇭",
+  "Brasil":"🇧🇷","Marruecos":"🇲🇦","Haití":"🇭🇹","Escocia":"🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+  "EE.UU.":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Turquía":"🇹🇷",
+  "Alemania":"🇩🇪","Curazao":"🇨🇼","Costa de Marfil":"🇨🇮","Ecuador":"🇪🇨",
+  "Países Bajos":"🇳🇱","Japón":"🇯🇵","Suecia":"🇸🇪","Túnez":"🇹🇳",
+  "Bélgica":"🇧🇪","Egipto":"🇪🇬","Irán":"🇮🇷","N. Zelanda":"🇳🇿",
+  "España":"🇪🇸","Uruguay":"🇺🇾","Arabia Saudí":"🇸🇦","Cabo Verde":"🇨🇻",
+  "Francia":"🇫🇷","Senegal":"🇸🇳","Irak":"🇮🇶","Noruega":"🇳🇴",
+  "Argentina":"🇦🇷","Argelia":"🇩🇿","Austria":"🇦🇹","Jordania":"🇯🇴",
+  "Portugal":"🇵🇹","RD Congo":"🇨🇩","Uzbekistán":"🇺🇿","Colombia":"🇨🇴",
+  "Inglaterra":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croacia":"🇭🇷","Ghana":"🇬🇭","Panamá":"🇵🇦"
 };
+
+const teamsData = {
+  A: ["México","Sudáfrica","Corea del Sur","República Checa"],
+  B: ["Canadá","Bosnia y Herz.","Qatar","Suiza"],
+  C: ["Brasil","Marruecos","Haití","Escocia"],
+  D: ["EE.UU.","Paraguay","Australia","Turquía"],
+  E: ["Alemania","Curazao","Costa de Marfil","Ecuador"],
+  F: ["Países Bajos","Japón","Suecia","Túnez"],
+  G: ["Bélgica","Egipto","Irán","N. Zelanda"],
+  H: ["España","Uruguay","Arabia Saudí","Cabo Verde"],
+  I: ["Francia","Senegal","Irak","Noruega"],
+  J: ["Argentina","Argelia","Austria","Jordania"],
+  K: ["Portugal","RD Congo","Uzbekistán","Colombia"],
+  L: ["Inglaterra","Croacia","Ghana","Panamá"]
+};
+
+function flag(n) { return flagMap[n] || ''; }
 
 const matchDefs = [[0,1],[2,3],[0,2],[1,3],[0,3],[1,2]];
 let results = {}, bracketPicks = {};
-
 for (let g of "ABCDEFGHIJKL") { results[g] = {}; matchDefs.forEach((_,i) => results[g][i] = ''); }
 for (let r = 0; r < 5; r++) bracketPicks[r] = {};
 
@@ -172,20 +267,20 @@ function renderGroups() {
     matchDefs.forEach((m,i) => {
       const sel = results[g][i]||'';
       const d = document.createElement('div'); d.className = 'match';
-      d.innerHTML = `<span class="tn">${t[m[0]]}</span>
+      d.innerHTML = `<span class="tn">${flag(t[m[0]])} ${t[m[0]]}</span>
         <select data-g="${g}" data-m="${i}">
           <option value="">Elegir...</option>
-          <option value="A" ${sel==='A'?'selected':''}>${t[m[0]]} gana</option>
-          <option value="D" ${sel==='D'?'selected':''}>Empate</option>
-          <option value="B" ${sel==='B'?'selected':''}>${t[m[1]]} gana</option>
+          <option value="A" ${sel==='A'?'selected':''}>${flag(t[m[0]])} ${t[m[0]]} gana</option>
+          <option value="D" ${sel==='D'?'selected':''}>🤝 Empate</option>
+          <option value="B" ${sel==='B'?'selected':''}>${flag(t[m[1]])} ${t[m[1]]} gana</option>
         </select>
-        <span class="tn">${t[m[1]]}</span>`;
+        <span class="tn">${flag(t[m[1]])} ${t[m[1]]}</span>`;
       md.appendChild(d);
     });
     const tbl = document.createElement('table'); tbl.className = 'standings';
     let h = '<tr><th>#</th><th>Equipo</th><th>Pts</th></tr>';
     st.forEach((s,i) => {
-      h += `<tr class="${i<2?'qualified':i===2?'third':''}"><td>${i+1}</td><td>${s.name}</td><td><span class="pts-badge">${s.pts}</span></td></tr>`;
+      h += `<tr class="${i<2?'qualified':i===2?'third':''}"><td>${i+1}</td><td>${flag(s.name)} ${s.name}</td><td><span class="pts-badge">${s.pts}</span></td></tr>`;
     });
     tbl.innerHTML = h; card.appendChild(tbl); c.appendChild(card);
   }
@@ -196,13 +291,13 @@ function renderQualifiers() {
   let h = '<div class="q-grid">';
   for (let g of "ABCDEFGHIJKL") {
     const st = calcStandings(g);
-    h += `<div class="q-item"><strong>${g}</strong> <span class="q-1st">${st[0]?.name||'—'}</span> · <span class="q-2nd">${st[1]?.name||'—'}</span></div>`;
+    h += `<div class="q-item"><strong>${g}</strong> <span class="q-1st">${flag(st[0]?.name||'')} ${st[0]?.name||'—'}</span> · <span class="q-2nd">${flag(st[1]?.name||'')} ${st[1]?.name||'—'}</span></div>`;
   }
   h += '</div>';
   const thirds = getThirds();
-  h += '<div class="third-section"><h4>Mejores terceros (pasan 8 de 12)</h4><div class="third-grid">';
+  h += '<div class="third-section"><h4>⚡ Mejores terceros (pasan 8 de 12)</h4><div class="third-grid">';
   thirds.forEach((t,i) => {
-    h += `<span class="third-chip ${i<8?'third-in':'third-out'}">${t.name} (${t.group}) ${t.pts}pts</span>`;
+    h += `<span class="third-chip ${i<8?'third-in':'third-out'}">${flag(t.name)} ${t.name} (${t.group}) ${t.pts}pts</span>`;
   });
   h += '</div></div>';
   qd.innerHTML = h;
@@ -232,10 +327,9 @@ function renderBracket() {
     { label:'Octavos', sub:'Ronda 2', cls:'r16' },
     { label:'Cuartos', sub:'Final', cls:'qf' },
     { label:'Semifinales', sub:'Final', cls:'sf' },
-    { label:'Final', sub:'🏆', cls:'final' }
+    { label:'🏆 Final', sub:'19 Jul · MetLife', cls:'final' }
   ];
 
-  // Build all rounds
   const allRounds = [r32matches];
   for (let r = 0; r < 4; r++) {
     const prev = allRounds[r], next = [];
@@ -246,30 +340,24 @@ function renderBracket() {
     allRounds.push(next);
   }
 
-  // Calculate tree spacing: each R32 match = 1 unit, R16 = 2, QF = 4, SF = 8, Final = 16
-  // Unit height in pixels for each slot
-  const UNIT = 52; // base height per R32 match slot
-
+  const UNIT = 50;
   const div = document.getElementById('bracket'); div.innerHTML = '';
   const flow = document.createElement('div'); flow.className = 'bracket-flow';
 
   allRounds.forEach((round, r) => {
     const col = document.createElement('div'); col.className = `round-col ${names[r].cls}`;
-
     const hdr = document.createElement('div'); hdr.className = 'round-header';
     hdr.innerHTML = `${names[r].label} <span class="sub">${names[r].sub}</span>`;
     col.appendChild(hdr);
 
-    const numMatches = round.length;
-    const scale = Math.pow(2, r); // 1,2,4,8,16
-    const matchHeight = UNIT * scale;
-    const gap = (r === 0) ? 6 : scale * 4 + 2;
+    const scale = Math.pow(2, r);
+    const gap = r === 0 ? 6 : scale * 4;
 
     round.forEach((match, m) => {
       const slot = document.createElement('div'); slot.className = 'match-slot';
-      slot.style.minHeight = (r === 0) ? `${matchHeight}px` : `${matchHeight - 4}px`;
-      slot.style.paddingTop = (m === 0 && r === 0) ? '0' : `${gap/2}px`;
-      slot.style.paddingBottom = (m < numMatches - 1) ? `${gap/2}px` : '0';
+      slot.style.minHeight = r === 0 ? `${UNIT}px` : `${UNIT * scale - 4}px`;
+      slot.style.paddingTop = r === 0 && m === 0 ? '0' : `${gap/2}px`;
+      slot.style.paddingBottom = m < round.length - 1 ? `${gap/2}px` : '0';
 
       const pick = bracketPicks[r]?.[m];
       const card = document.createElement('div'); card.className = 'match-card';
@@ -283,7 +371,7 @@ function renderBracket() {
           card.appendChild(vs);
         }
         const btn = document.createElement('button'); btn.className = `team-btn${isWin?' winner':''}`;
-        btn.textContent = team;
+        btn.innerHTML = `${flag(team)} ${team}`;
         btn.dataset.r = r; btn.dataset.m = m; btn.dataset.side = side;
         if (isTbd) btn.disabled = true;
         card.appendChild(btn);
@@ -293,46 +381,27 @@ function renderBracket() {
       col.appendChild(slot);
     });
 
-    // Add invisible filler at bottom for tree alignment
-    if (r > 0) {
-      const lastSlot = col.lastChild;
-      if (lastSlot) {
-        const totalHeight = col.scrollHeight;
-        const expected = matchHeight * numMatches + gap * (numMatches - 1) + 8;
-        // Not exact but close enough
-      }
-    }
-
     flow.appendChild(col);
   });
 
   div.appendChild(flow);
 
-  // Champion
   const fp = bracketPicks[4]?.[0];
   const ch = document.getElementById('champion');
   ch.innerHTML = fp && fp !== '—'
-    ? `<div class="champion-box">🏆 ${fp} <small>Campeón del Mundo 2026</small></div>`
+    ? `<div class="champion-box">🏆 ${flag(fp)} ${fp} <small>🇺🇸 🇨🇦 🇲🇽 · Campeón del Mundo 2026</small></div>`
     : '';
 
-  // Click handlers
   document.querySelectorAll('.team-btn:not(:disabled)').forEach(btn => {
     btn.addEventListener('click', function() {
-      const r = parseInt(this.dataset.r);
-      const m = parseInt(this.dataset.m);
-      const side = parseInt(this.dataset.side);
+      const r = parseInt(this.dataset.r), m = parseInt(this.dataset.m), side = parseInt(this.dataset.side);
       const team = allRounds[r][m][side];
       if (team === '—') return;
-
       bracketPicks[r][m] = team;
-      // Clear downstream
       for (let rr = r+1; rr < 5; rr++) {
         const factor = Math.pow(2, rr-r);
-        const sm = Math.floor(m / factor) * (factor/2);
-        const em = sm + factor/2;
-        for (let k in bracketPicks[rr]) {
-          if (parseInt(k) >= sm && parseInt(k) < em) delete bracketPicks[rr][k];
-        }
+        const sm = Math.floor(m / factor) * (factor/2), em = sm + factor/2;
+        for (let k in bracketPicks[rr]) { if (parseInt(k) >= sm && parseInt(k) < em) delete bracketPicks[rr][k]; }
       }
       renderBracket();
     });
@@ -346,6 +415,18 @@ document.addEventListener('change', e => {
     renderGroups(); renderQualifiers(); renderBracket();
   }
 });
+
+// Generate stars
+(function(){
+  const s = document.getElementById('stars');
+  for(let i=0;i<80;i++){
+    const d = document.createElement('div'); d.className='star';
+    d.style.left=Math.random()*100+'%'; d.style.top=Math.random()*100+'%';
+    d.style.animationDelay=Math.random()*5+'s'; d.style.animationDuration=(2+Math.random()*4)+'s';
+    d.style.width=d.style.height=(1+Math.random()*2)+'px';
+    s.appendChild(d);
+  }
+})();
 
 renderGroups(); renderQualifiers(); renderBracket();
 </script>
