@@ -375,7 +375,6 @@ function rB(){
   document.querySelectorAll('.tb:not(:disabled)').forEach(function(btn){
     btn.addEventListener('click',function(){
       var r=parseInt(this.dataset.r),m=parseInt(this.dataset.m),sd=parseInt(this.dataset.side);
-      if(r===4)return;
       var mx=AL[r][m];if(!mx)return;
       var tm=sd===0?mx.e1:mx.e2;
       if(tm==='-'||!tm)return;
