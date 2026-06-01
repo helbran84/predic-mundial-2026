@@ -210,7 +210,7 @@ function dn(n){return N[n]||n}
 function fl(n){return C[n]?'<img src="https://flagcdn.com/16x12/'+C[n]+'.png" alt="">':''}
 function fl24(n){return C[n]?'<img src="https://flagcdn.com/24x18/'+C[n]+'.png" alt="">':''}
 var md=[[0,1],[2,3],[0,2],[1,3],[0,3],[1,2]];
-var R={},BP={};
+var R={},BP={};for(var ri=0;ri<5;ri++)BP[ri]={};
 (function(){try{var d=localStorage.getItem('m26r');if(d){R=JSON.parse(d);var ok=1;for(var g of "ABCDEFGHIJKL")for(var k in R[g]){if(typeof R[g][k]!=='string'||R[g][k].indexOf('-')<0){ok=0;break}};if(!ok)throw 1}else{throw 1}}catch(e){R={};for(var g of "ABCDEFGHIJKL"){R[g]={};md.forEach(function(_,i){R[g][i]=''})}}})();
 for(var r=0;r<5;r++)BP[r]={};
 function svR(){try{localStorage.setItem('m26r',JSON.stringify(R))}catch(e){}}
@@ -291,107 +291,100 @@ function rB(){
   var f={},s2={};
   for(var g of "ABCDEFGHIJKL"){var st=calc(g);if(st[0])f[g]=st[0].name;if(st[1])s2[g]=st[1].name}
   var t3=th().slice(0,8).map(function(t){return t.name});
-  function gl(tm){
+  function la(tm){
     for(var g of "ABCDEFGHIJKL"){if(f[g]===tm)return '1\u00b0 '+g;if(s2[g]===tm)return '2\u00b0 '+g}
-    var ti=t3.indexOf(tm);if(ti>=0)return '3\u00b0 #'+(ti+1);
-    return '';
+    var ti=t3.indexOf(tm);if(ti>=0)return '3\u00b0 #'+(ti+1);return '';
   }
-  function gIdx(ri,start,mi){return start/Math.pow(2,ri)+mi}
-  function mkW(tm,ri,gi,sd,pk,lb){
-    var btn=document.createElement('button');
-    btn.className='tb'+(pk===tm?' win':'');
-    if(tm==='-'){btn.disabled=true;btn.innerHTML='-';return btn}
-    var fb=lb?'<span class="lb" style="color:#81C784">'+lb+'</span> ':'';
-    btn.innerHTML=fb+fl(tm)+' '+dn(tm);
-    btn.dataset.r=ri;btn.dataset.m=gi;btn.dataset.side=sd;
-    return btn;
-  }
-  var r32m=[];
-  var r32defs=[
-    {e1:'A',e2:'B'},{e1:'C',e2:'D'},{e1:'E',e2:'F'},{e1:'G',e2:'H'},
-    {e1:'I',e2:'J'},{e1:'K',e2:'L'},{e1:'B',e2:'A'},{e1:'D',e2:'C'},
-    {e1:'F',e2:'E'},{e1:'H',e2:'G'},{e1:'J',e2:'I'},{e1:'L',e2:'K'}
+  // R32 matchups (FIFA 2026 official) — 16 matches
+  var rd=[];
+  var defs=[
+    [s2.A,s2.B,'2\u00b0 B'],[f.E,null,'3\u00b0'],[f.F,s2.C,'2\u00b0 C'],[f.I,null,'3\u00b0'],
+    [f.D,null,'3\u00b0'],[f.G,null,'3\u00b0'],[s2.K,s2.L,'2\u00b0 L'],[f.H,s2.J,'2\u00b0 J'],
+    [f.C,s2.F,'2\u00b0 F'],[s2.E,s2.I,'2\u00b0 I'],[f.A,null,'3\u00b0'],[f.L,null,'3\u00b0'],
+    [f.J,s2.H,'2\u00b0 H'],[s2.D,s2.G,'2\u00b0 G'],[f.B,null,'3\u00b0'],[f.K,null,'3\u00b0']
   ];
-  r32defs.forEach(function(d){r32m.push({e1:f[d.e1]||'-',e2:s2[d.e2]||'-'})});
-  for(var i=0;i<8;i+=2){r32m.push({e1:t3[i]||'-',e2:t3[i+1]||'-'})}
-  var al=[];al.push(r32m);
-  for(var r=0;r<4;r++){var p=al[r],nx=[];for(var i=0;i<p.length;i+=2){var a=BP[r]?.[i],b=BP[r]?.[i+1];nx.push({e1:a||'-',e2:b||'-'})};al.push(nx)}
+  defs.forEach(function(d){rd.push({e1:d[0]||'-',e2:d[1]||'-',l2:d[2],la:la(d[0])})});
+  // Side pairings: which R32 matches feed into which R16
+  var sp=[[[0,2],[1,3],[4,5],[6,7]],[[8,9],[10,11],[12,13],[14,15]]];
+  // R32→R16 mapping: for R32[m], which R16 slot does it feed?
+  var mr={};sp.forEach(function(side,si){side.forEach(function(p,pi){mr[p[0]]=si*4+pi;mr[p[1]]=si*4+pi})});
+  // R16→QF / QF→SF mappings
+  var mq=[0,0,1,1,2,2,3,3];
+  var ms=[0,0,1,1];
+  // Build advancement levels (AL)
+  var AL=[rd];
+  var r16=[];sp.forEach(function(side){side.forEach(function(p){r16.push({e1:BP[0]?.[p[0]]||'-',e2:BP[0]?.[p[1]]||'-'})})});AL.push(r16);
+  var qf=[];for(var i=0;i<8;i+=2)qf.push({e1:BP[1]?.[i]||'-',e2:BP[1]?.[i+1]||'-'});AL.push(qf);
+  var sf=[];for(var i=0;i<4;i+=2)sf.push({e1:BP[2]?.[i]||'-',e2:BP[2]?.[i+1]||'-'});AL.push(sf);
+  AL.push([{e1:BP[3]?.[0]||'-',e2:BP[3]?.[1]||'-'}]);
   var fp=BP[4]?.[0];
+  function mk(tm,ri,mi,sd,pk,lb){
+    var b=document.createElement('button');b.className='tb'+(pk===tm?' win':'');
+    if(tm==='-'){b.disabled=true;b.innerHTML='-';return b}
+    var lbx=lb?'<span class="lb" style="color:#81C784">'+lb+'</span> ':'';
+    b.innerHTML=lbx+fl(tm)+' '+dn(tm);
+    b.dataset.r=ri;b.dataset.m=mi;b.dataset.side=sd;return b;
+  }
+  function mc(ri,mi,d1,d2,pk,lb1,lb2){
+    var sl=document.createElement('div');sl.className='ms';
+    var c=document.createElement('div');c.className='mc';
+    c.appendChild(mk(d1,ri,mi,0,pk,lb1));
+    var v=document.createElement('div');v.className='mv';v.textContent='VS';c.appendChild(v);
+    c.appendChild(mk(d2,ri,mi,1,pk,lb2));
+    sl.appendChild(c);return sl;
+  }
+  var rn=['Dieciseisavos','Octavos','Cuartos','Semifinal','Final'];
   var dv=document.getElementById('bracket');dv.innerHTML='';
-  [0,8].forEach(function(start){
-    var side=document.createElement('div');side.style.cssText='display:flex;flex-direction:column;gap:4px';
-    var lbl=document.createElement('div');lbl.className='blabel';lbl.textContent=start===0?'LADO A':'LADO B';
-    side.appendChild(lbl);
-    var wrap=document.createElement('div');wrap.className='bf';
-    var cols=[];
-    [0,1,2,3,4].forEach(function(ri){
-      var col=document.createElement('div');col.className='rc';col.style.minWidth=ri===4?'105px':'92px';
-      var hd=document.createElement('div');hd.className='rh';hd.textContent=['R32','R16','QF','SF','FINAL'][ri];col.appendChild(hd);
-      cols.push(col);
-    });
-    var ct=8;
-    for(var mi=0;mi<ct;mi++){
-      var gi=start+mi;
-      var mx=r32m[gi];
-      var sl=document.createElement('div');sl.className='ms';
-      var mc2=document.createElement('div');mc2.className='mc';
-      var pk=BP[0]?.[gi];
-      var b1=mkW(mx.e1,0,gi,0,pk,gl(mx.e1));
-      mc2.appendChild(b1);
-      var vs=document.createElement('div');vs.className='mv';vs.textContent='VS';mc2.appendChild(vs);
-      var b2=mkW(mx.e2,0,gi,1,pk,gl(mx.e2));
-      mc2.appendChild(b2);
-      sl.appendChild(mc2);cols[0].appendChild(sl);
-    }
-    for(var ri=1;ri<4;ri++){
-      ct=8/Math.pow(2,ri);
-      for(var mi=0;mi<ct;mi++){
-        var gi=gIdx(ri,start,mi);
-        var sl=document.createElement('div');sl.className='ms';
-        var mc2=document.createElement('div');mc2.className='mc';
-        var pk=BP[ri]?.[gi];
-        var mx=al[ri]?.[gi];
-        var b1=mkW(mx?.e1||'-',ri,gi,0,pk,'');
-        mc2.appendChild(b1);
-        var vs=document.createElement('div');vs.className='mv';vs.textContent='VS';mc2.appendChild(vs);
-        var b2=mkW(mx?.e2||'-',ri,gi,1,pk,'');
-        mc2.appendChild(b2);
-        sl.appendChild(mc2);cols[ri].appendChild(sl);
+  function sd(si){
+    var box=document.createElement('div');box.style.cssText='display:flex;flex-direction:column;gap:4px';
+    var l=document.createElement('div');l.className='blabel';l.textContent='LADO '+(si?'B':'A');box.appendChild(l);
+    var w=document.createElement('div');w.className='bf';
+    var st=si*8;
+    // Build columns
+    for(var ri=0;ri<5;ri++){
+      var col=document.createElement('div');col.className='rc';col.style.minWidth=ri===4?'108px':'98px';
+      var hd=document.createElement('div');hd.className='rh';hd.textContent=rn[ri];col.appendChild(hd);
+      var cnt = ri===0?8:ri===4?1:Math.floor(8/Math.pow(2,ri));
+      for(var mi=0;mi<cnt;mi++){
+        if(ri===0){
+          var idx=st+mi;
+          var mx=rd[idx];
+          var pk=BP[0]?.[idx];
+          col.appendChild(mc(0,idx,mx.e1,mx.e2,pk,mx.la,mx.l2));
+        } else if(ri<4){
+          var gi=si*(8>>ri) + mi;
+          var mx=AL[ri]?.[gi];
+          col.appendChild(mc(ri,gi,mx?.e1||'-',mx?.e2||'-',BP[ri]?.[gi],'',''));
+        } else {
+          if(si===0){
+            var mx0=AL[4]?.[0];
+            col.appendChild(mc(4,0,mx0?.e1||'-',mx0?.e2||'-',BP[4]?.[0],'',''));
+            if(fp&&fp!=='-'){
+              var ch=document.createElement('div');ch.style.textAlign='center';ch.style.padding='6px 0';
+              ch.innerHTML='<div style="font-size:14px;background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,180,0,0.1));border:1px solid rgba(255,215,0,0.3);border-radius:8px;padding:6px 12px;display:inline-block">'+fl24(fp)+' '+dn(fp)+'<br><small style="color:#FFD700;font-size:8px">Campe\u00f3n del Mundo 2026</small></div>';
+              col.appendChild(ch);
+            }
+          }
+        }
       }
+      w.appendChild(col);
     }
-    if(start===0){
-      var sl=document.createElement('div');sl.className='ms';
-      var mc2=document.createElement('div');mc2.className='mc';
-      var pk=BP[4]?.[0];
-      var mx=al[4]?.[0];
-      var b1=mkW(mx?.e1||'-',4,0,0,pk,'');
-      mc2.appendChild(b1);
-      var vs=document.createElement('div');vs.className='mv';vs.textContent='VS';mc2.appendChild(vs);
-      var b2=mkW(mx?.e2||'-',4,0,1,pk,'');
-      mc2.appendChild(b2);
-      sl.appendChild(mc2);cols[4].appendChild(sl);
-      if(fp&&fp!=='-'){
-        var ch=document.createElement('div');ch.style.textAlign='center';ch.style.padding='8px 0';
-        ch.innerHTML='<div style="background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,180,0,0.1));border:1px solid rgba(255,215,0,0.3);border-radius:8px;padding:8px 16px;display:inline-block">'+fl24(fp)+' '+dn(fp)+'<br><small style="color:#FFD700;font-size:9px">Campe\u00f3n del Mundo 2026</small></div>';
-        sl.appendChild(ch);
-      }
-    }
-    cols.forEach(function(c){wrap.appendChild(c)});
-    side.appendChild(wrap);dv.appendChild(side);
-  });
+    box.appendChild(w);dv.appendChild(box);
+  }
+  sd(0);sd(1);
   document.querySelectorAll('.tb:not(:disabled)').forEach(function(btn){
     btn.addEventListener('click',function(){
-      var r=parseInt(this.dataset.r),m=parseInt(this.dataset.m);
+      var r=parseInt(this.dataset.r),m=parseInt(this.dataset.m),sd=parseInt(this.dataset.side);
       if(r===4)return;
-      var p=al[r];
-      if(!p||!p[m])return;
-      var sd=parseInt(this.dataset.side);
-      var tm='-';
-      if(sd===0&&typeof p[m].e1!=='undefined')tm=p[m].e1;
-      else if(sd===1&&typeof p[m].e2!=='undefined')tm=p[m].e2;
+      var mx=AL[r][m];if(!mx)return;
+      var tm=sd===0?mx.e1:mx.e2;
       if(tm==='-'||!tm)return;
-      BP[r][m]=tm;
-      for(var rr=r+1;rr<5;rr++){var fa=Math.pow(2,rr-r);delete BP[rr][Math.floor(m/fa)]}
+      if(!BP[r])BP[r]={};BP[r][m]=tm;
+      // Clear downstream
+      if(r===0){delete BP[1][mr[m]];delete BP[2][mq[mr[m]]];delete BP[3][ms[mq[mr[m]]]];delete BP[4][0]}
+      else if(r===1){delete BP[2][mq[m]];delete BP[3][ms[mq[m]]];delete BP[4][0]}
+      else if(r===2){delete BP[3][ms[m]];delete BP[4][0]}
+      else if(r===3){delete BP[4][0]}
       rB();
     })
   });
